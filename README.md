@@ -1,40 +1,84 @@
-# Big-Data-Project
 
+# Big Data Final Project
 
-Data Sets: 
-https://data.cityofchicago.org/Transportation/Traffic-Crashes-Crashes/85ca-t3if/data_preview
-https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d/data_preview
-https://data.cityofchicago.org/Transportation/Traffic-Crashes-Vehicles/68nd-jvt3/data_preview
+🚗 **Title**:  
+**Crash Injury Severity Prediction Using Traffic Data**
 
+📊 **Objective**:  
+Analyze traffic crash data to predict the most severe injury outcomes based on crash conditions, environment, and vehicle features.
 
----
+📚 **Dataset Overview**  
+- **Data Source**: City of Chicago Public Data Portal (Traffic Crashes, Vehicles, People)
+- **Original Size**: 1.7+ Million records (vehicles), 1.9+ Million (people), 0.9 Million (crashes)
+- **Files used**:
+  - Traffic_Crashes_Vehicles.csv
+  - Traffic_Crashes_Crashes.csv
+  - Traffic_Crashes_People.csv
 
-## 📊 EDA and Modeling Direction (by Asif)
+> **Note**:  
+> Large raw CSVs have been excluded from this repository due to GitHub file size limits.
 
-This section covers the exploratory data analysis (EDA) and initial modeling preparation for the project.
+⚙️ **Project Structure**
 
-### ✅ Tasks Completed:
-- Loaded and joined three datasets from the City of Chicago Open Data Portal:
-  - Traffic Crashes (Crashes)
-  - Traffic Crashes (Vehicles)
-  - Traffic Crashes (People)
-- Cleaned and merged datasets using `CRASH_RECORD_ID` and `VEHICLE_ID`
-- Conducted null value analysis and feature quality assessment
-- Identified high-value predictive features (e.g., weather condition, lighting, vehicle type, crash hour)
-- Explored class distribution for injury severity (`MOST_SEVERE_INJURY`)
-- Analyzed distribution of total injuries per crash (`INJURIES_TOTAL`)
-- Created a cleaned and trimmed modeling-ready dataset
+| Folder / File                | Description                                      |
+| ----------------------------- | ------------------------------------------------ |
+| notebook.ipynb                | Main Data Analysis & Modeling Jupyter Notebook   |
+| final_joined_crash_data.parquet | Final processed data (small version, Parquet format) |
+| README.md                     | Project overview and instructions                |
 
-### 🧠 Suggested Modeling Direction:
-> **Research Question:**  
-> Can we predict the most severe injury outcome of a crash based on crash conditions, environment, and vehicle type?
+📈 **Key Steps Performed**
 
-| Direction              | Target Variable           | Rationale                                           |
-|------------------------|---------------------------|-----------------------------------------------------|
-| ✅ Multi-class Classification | `MOST_SEVERE_INJURY`        | Balanced class distribution and interpretability     |
-| Binary Classification   | `INJURIES_FATAL` (0/1)     | Predicting fatal crashes (rare but meaningful)       |
-| Regression              | `INJURIES_TOTAL`           | Less preferred due to skewed distribution            |
+- **Data Preparation**  
+  - Merged Vehicles, Crashes, and People data on Crash ID.
+  - Handled missing values and dropped extremely sparse columns.
+  - Feature engineering: Time of crash, weather, roadway condition, vehicle type, etc.
 
-### 💾 Output:
-- Final modeling dataset saved as Parquet file
-- Notebook: [`EDA_Modeling_Direction.ipynb`](notebook/EDA_Modeling_Direction.ipynb)
+- **Exploratory Data Analysis (EDA)**  
+  - Distribution of injury severities
+  - Impact of weather, lighting, and surface conditions
+  - Correlation between speed limits and injury rates
+
+- **Modeling Tasks**
+  - Multi-class Classification (Injury Severity Prediction):
+    - Logistic Regression
+    - Decision Tree Classifier
+    - Random Forest Classifier
+  - Binary Classification (Fatal Crash Detection):
+    - Gradient Boosted Tree Classifier
+
+- **Model Evaluation**
+  - Metrics: Accuracy, F1 Score, ROC AUC, PR AUC
+  - Visualized evaluation metrics for each model
+
+🧠 **Final Model Recommendations**
+
+| Model                    | Task                    | Recommendation                                |
+| ------------------------- | ----------------------- | --------------------------------------------- |
+| Decision Tree Classifier  | Predict Injury Severity | ✅ Best multi-class performance                |
+| GBT Classifier (Binary)   | Predict Fatal Crashes   | ✅ Excellent rare-event separation (ROC AUC = 0.85) |
+
+📋 **Final Visualization**
+
+| Model                   | Accuracy | F1 Score | ROC AUC | PR AUC |
+| ------------------------ | -------- | -------- | ------- | ------ |
+| Logistic Regression      | 0.8332   | 0.7781   | N/A     | N/A    |
+| Decision Tree Classifier | 0.8339   | 0.7792   | N/A     | N/A    |
+| Random Forest Classifier | 0.8229   | 0.7460   | N/A     | N/A    |
+| GBT Classifier (Binary)  | N/A      | N/A      | 0.8543  | 0.0745 |
+
+📦 **How to Run**
+
+- Clone this repo:
+  ```bash
+  git clone https://github.com/asif-imtiaz-j/Big-Data-Project.git
+  ```
+
+- Open `notebook.ipynb` using VSCode, JupyterLab, or Databricks.
+
+- Install required Python packages:
+  ```bash
+  pip install pyspark matplotlib pandas
+  ```
+
+- Run each cell to reproduce results.
+
