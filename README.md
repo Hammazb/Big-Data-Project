@@ -82,11 +82,3 @@ Analyze traffic crash data to predict the most severe injury outcomes based on c
 
 - Run each cell to reproduce results.
 
----
-
-👤 **Author**  
-**Asif Imtiaz**  
-Graduate Student — Business Analytics  
-University of South Florida
-
-📫 [LinkedIn](#) • [GitHub](#)
