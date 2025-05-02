@@ -1,0 +1,20 @@
+# Ignore large CSV data files
+Traffic_Crashes_Crashes.csv
+Traffic_Crashes_People.csv
+Traffic_Crashes_Vehicles.csv
+
+# Ignore all Parquet or CSV data files if present
+*.csv
+*.parquet
+
+# Ignore Databricks or system-generated folders
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+
+# Ignore VSCode and Python-related environment files
+.vscode/
+.env
+.venv
+*.log
+*.egg-info/

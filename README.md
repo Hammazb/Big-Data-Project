@@ -1,84 +1,93 @@
+# 🚦 Big Data Final Project – Predicting Injury Severity in Chicago Traffic Crashes
 
-# Big Data Final Project
+## 👥 Group Members
+- Asif Imtiaz  
+- Muhammad Hammaz  
+- Andrey Martynenko  
+- Martin Zuluaga
 
-🚗 **Title**:  
-**Crash Injury Severity Prediction Using Traffic Data**
+---
 
-📊 **Objective**:  
-Analyze traffic crash data to predict the most severe injury outcomes based on crash conditions, environment, and vehicle features.
+## 🎯 Objective
 
-📚 **Dataset Overview**  
-- **Data Source**: City of Chicago Public Data Portal (Traffic Crashes, Vehicles, People)
-- **Original Size**: 1.7+ Million records (vehicles), 1.9+ Million (people), 0.9 Million (crashes)
-- **Files used**:
-  - Traffic_Crashes_Vehicles.csv
-  - Traffic_Crashes_Crashes.csv
-  - Traffic_Crashes_People.csv
+To predict the **most severe injury outcome** of a traffic crash using machine learning and over 2 million crash records from the **City of Chicago** open data portal. This project aims to support **faster emergency response**, **resource allocation**, and **urban planning** through **data-driven modeling**.
 
-> **Note**:  
-> Large raw CSVs have been excluded from this repository due to GitHub file size limits.
+---
 
-⚙️ **Project Structure**
+## 🗂️ Data Sources
 
-| Folder / File                | Description                                      |
-| ----------------------------- | ------------------------------------------------ |
-| notebook.ipynb                | Main Data Analysis & Modeling Jupyter Notebook   |
-| final_joined_crash_data.parquet | Final processed data (small version, Parquet format) |
-| README.md                     | Project overview and instructions                |
+- [Traffic Crashes – Crashes](https://data.cityofchicago.org/Transportation/Traffic-Crashes-Crashes/85ca-t3if)
+- [Traffic Crashes – People](https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d)
+- [Traffic Crashes – Vehicles](https://data.cityofchicago.org/Transportation/Traffic-Crashes-Vehicles/68nd-jvt3)
 
-📈 **Key Steps Performed**
+These datasets were **joined using CRASH_RECORD_ID and VEHICLE_ID**, forming a master dataset of 2.3M rows and 143 features.
 
-- **Data Preparation**  
-  - Merged Vehicles, Crashes, and People data on Crash ID.
-  - Handled missing values and dropped extremely sparse columns.
-  - Feature engineering: Time of crash, weather, roadway condition, vehicle type, etc.
+---
 
-- **Exploratory Data Analysis (EDA)**  
-  - Distribution of injury severities
-  - Impact of weather, lighting, and surface conditions
-  - Correlation between speed limits and injury rates
+## 🔍 Phase-wise Breakdown
 
-- **Modeling Tasks**
-  - Multi-class Classification (Injury Severity Prediction):
-    - Logistic Regression
-    - Decision Tree Classifier
-    - Random Forest Classifier
-  - Binary Classification (Fatal Crash Detection):
-    - Gradient Boosted Tree Classifier
+### ✅ Phase 1–3: Loading and EDA
+- Cleaned and joined 3 datasets.
+- Handled nulls and selected relevant features.
+- Observed **class imbalance** in injury severity.
 
-- **Model Evaluation**
-  - Metrics: Accuracy, F1 Score, ROC AUC, PR AUC
-  - Visualized evaluation metrics for each model
+### ✅ Phase 4–5: Modeling Direction
+- Target Variable: `MOST_SEVERE_INJURY`
+- Decided on **multi-class classification**.
+- Created a simplified 3-class injury setup:
+  - No Injury
+  - Minor Injury
+  - Severe Injury (includes Fatal + Incapacitating)
 
-🧠 **Final Model Recommendations**
+### ✅ Phase 6: Feature Engineering
+- Selected 11 features (7 categorical + 4 numerical).
+- Applied `StringIndexer`, `OneHotEncoder`, `VectorAssembler`.
+- Split data into training (80%) and testing (20%).
 
-| Model                    | Task                    | Recommendation                                |
-| ------------------------- | ----------------------- | --------------------------------------------- |
-| Decision Tree Classifier  | Predict Injury Severity | ✅ Best multi-class performance                |
-| GBT Classifier (Binary)   | Predict Fatal Crashes   | ✅ Excellent rare-event separation (ROC AUC = 0.85) |
+### ✅ Phase 7–10: Modeling & Evaluation
 
-📋 **Final Visualization**
+| Model                | Accuracy | F1 Score |
+|---------------------|----------|----------|
+| Logistic Regression | ~84%     | ~79%     |
+| Decision Tree       | ~81%     | ~75%     |
+| Random Forest       | ~87%     | ~82%     |
+| GBTClassifier       | ~89%     | ~83%     |
 
-| Model                   | Accuracy | F1 Score | ROC AUC | PR AUC |
-| ------------------------ | -------- | -------- | ------- | ------ |
-| Logistic Regression      | 0.8332   | 0.7781   | N/A     | N/A    |
-| Decision Tree Classifier | 0.8339   | 0.7792   | N/A     | N/A    |
-| Random Forest Classifier | 0.8229   | 0.7460   | N/A     | N/A    |
-| GBT Classifier (Binary)  | N/A      | N/A      | 0.8543  | 0.0745 |
+- Evaluation Metrics:
+  - Accuracy, F1 Score, Precision, Recall
+  - Confusion Matrix Visualizations
+- Feature Importance Visuals included
 
-📦 **How to Run**
+### ✅ Phase 11: SparkSQL Analysis
+Included 8+ SQL queries (e.g., weather breakdown, lighting conditions, injury types, etc.) with interpretations.
 
-- Clone this repo:
-  ```bash
-  git clone https://github.com/asif-imtiaz-j/Big-Data-Project.git
-  ```
+---
 
-- Open `notebook.ipynb` using VSCode, JupyterLab, or Databricks.
+## 📈 Key Findings
 
-- Install required Python packages:
-  ```bash
-  pip install pyspark matplotlib pandas
-  ```
+- **83%** of crashes resulted in no injuries.
+- Features like `CRASH_HOUR`, `WEATHER_CONDITION`, `LIGHTING_CONDITION`, and `ROADWAY_SURFACE_COND` were highly predictive.
+- **Random Forest** showed the best balance between performance and interpretability.
 
-- Run each cell to reproduce results.
+---
 
+## 📌 Final Recommendations
+
+Based on model results and exploratory insights, we recommend the City of Chicago:
+
+1. **Integrate our model into 911 systems**  
+   Flag potentially severe crashes in real-time based on crash conditions to help **dispatchers prioritize emergency responses**.
+
+2. **Deploy Predictive Heatmaps**  
+   Use daily-updated injury prediction maps to **optimize EMS, police, and signage deployment** in high-risk zones.
+
+3. **Enhance Public Alerts**  
+   Trigger **weather-based alerts** and targeted speed enforcement during rain, snow, or low-light conditions.
+
+4. **Upgrade Infrastructure**  
+   Prioritize lighting, barriers, and road maintenance at historically dangerous intersections or road segments.
+
+5. **Monitor and Retrain Quarterly**  
+   Continuously **retrain the model every quarter** using updated crash data to maintain accuracy.
+
+---
