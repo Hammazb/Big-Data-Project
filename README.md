@@ -23,7 +23,6 @@ Analyze traffic crash data to predict the most severe injury outcomes based on c
 | Folder / File                | Description                                      |
 | ----------------------------- | ------------------------------------------------ |
 | notebook.ipynb                | Main Data Analysis & Modeling Jupyter Notebook   |
-| final_joined_crash_data.parquet | Final processed data (small version, Parquet format) |
 | README.md                     | Project overview and instructions                |
 
 📈 **Key Steps Performed**
